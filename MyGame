@@ -1,0 +1,67 @@
+//SET THE SPRITES
+var human = createSprite(44, 322);
+var ball = createSprite(100, 315);
+var hoop = createSprite(250, 70);
+var North = createSprite(25, 25);
+var South = createSprite(25, 50);
+var East = createSprite(25, 75);
+var West = createSprite(25, 100);
+//SET THE ANIMATIONS
+human.setAnimation("human");
+ball.setAnimation("basketball_1");
+hoop.setAnimation("ball_hoop");
+North.setAnimation("N");
+South.setAnimation("S");
+East.setAnimation("E");
+West.setAnimation("W");
+//SET THE SCALES
+human.scale = 0.4;
+ball.scale = 0.1;
+hoop.scale = 1;
+North.scale = 0.3;
+South.scale = 0.3;
+East.scale = 0.3;
+West.scale = 0.3;
+//SET THE VARIABLES
+var theScore = 0;
+var spoken = false;
+function draw() {
+  background("white");
+  drawSprites();
+  if (mousePressedOver(North)) {
+    ball.setVelocity(0, -2);
+  }
+  if (mousePressedOver(South)) {
+    ball.setVelocity(0, 2);
+  }
+  if (mousePressedOver(East)) {
+    ball.setVelocity(2, 0);
+  }
+  if (mousePressedOver(West)) {
+    ball.setVelocity(-2, 0);
+  }
+  if (ball.isTouching(hoop)) {
+    ball.x = 100;
+    ball.y = 315;
+    ball.setVelocity(0, 0);
+    theScore = theScore+2;
+  }
+  if (theScore==10) {
+    ball.destroy();
+    if (spoken == false) {
+     playSpeech("You Win!", "male", "English");
+     spoken = true;
+    }
+  }
+  if ( ball.y < 0 || ball.y>390 || ball.x<0 || ball.x>400) {
+    if (spoken == false) {
+   playSpeech("You Lose!", "male", "English");
+   ball.destroy();
+    spoken = true;
+    }
+  }
+  fill("green");
+  textSize(30);
+  textFont("MS");
+  text("Score:"+theScore, 200, 350);
+}
